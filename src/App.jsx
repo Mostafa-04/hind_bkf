@@ -18,6 +18,7 @@ import NewsletterFooter from "./components/NewsletterFooter";
 import CheckoutPage from "./components/CheckoutPage";
 import CartPage from "./components/CartPage";
 import { CartProvider } from "./context/CartContext";
+import ScrollToTop from "./components/ScrollToTop";
 
 function HomePage() {
   return (
@@ -36,6 +37,7 @@ function HomePage() {
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <CartProvider>
         <Navbar />
 
@@ -51,6 +53,7 @@ function App() {
 
         <NewsletterFooter />
       </CartProvider>
+      <ScrollToTop />
     </BrowserRouter>
   );
 }

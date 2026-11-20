@@ -10,6 +10,7 @@ import {
   ChevronDown,
   Loader2,
 } from "lucide-react";
+import Swal from "sweetalert2";
 
 /* Une seule animation d'entrée, désactivée si l'utilisateur
    préfère moins de mouvement. */
@@ -83,45 +84,69 @@ export default function CheckoutPage() {
     return Object.keys(next).length === 0;
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!cartItems.length || sending || !validate()) return;
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   if (!cartItems.length || sending || !validate()) return;
 
-    const orderDetails = cartItems
-      .map((item) => {
-        const name = item.name || item.title;
-        return [
-          `• ${name}`,
-          `Quantité : ${item.quantity}`,
-          `Prix : ${formatPrice(item.price)}`,
-          `Total : ${formatPrice(item.price * item.quantity)}`,
-        ].join("\n");
-      })
-      .join("\n\n");
+  //   const orderDetails = cartItems
+  //     .map((item) => {
+  //       const name = item.name || item.title;
+  //       return [
+  //         `• ${name}`,
+  //         `Quantité : ${item.quantity}`,
+  //         `Prix : ${formatPrice(item.price)}`,
+  //         `Total : ${formatPrice(item.price * item.quantity)}`,
+  //       ].join("\n");
+  //     })
+  //     .join("\n\n");
 
-    const message = [
-      `🛍️ *Nouvelle commande - ${SITE.name || "Luban BK"}*`,
-      "",
-      "*Informations client*",
-      `Nom : ${form.fullName.trim()}`,
-      `Téléphone : ${form.phone.trim()}`,
-      `Email : ${form.email.trim() || "Non renseigné"}`,
-      `Ville : ${form.city.trim()}`,
-      `Adresse : ${form.address.trim()}`,
-      "",
-      "*Détails de la commande*",
-      orderDetails,
-      "",
-      `*Total : ${formatPrice(totalPrice)}*`,
-      "Livraison à confirmer.",
-    ].join("\n");
+  //   const message = [
+  //     `🛍️ *Nouvelle commande - ${SITE.name || "Luban BK"}*`,
+  //     "",
+  //     "*Informations client*",
+  //     `Nom : ${form.fullName.trim()}`,
+  //     `Téléphone : ${form.phone.trim()}`,
+  //     `Email : ${form.email.trim() || "Non renseigné"}`,
+  //     `Ville : ${form.city.trim()}`,
+  //     `Adresse : ${form.address.trim()}`,
+  //     "",
+  //     "*Détails de la commande*",
+  //     orderDetails,
+  //     "",
+  //     `*Total : ${formatPrice(totalPrice)}*`,
+  //     "Livraison à confirmer.",
+  //   ].join("\n");
 
-    const url = `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(message)}`;
+  //   const url = `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(message)}`;
 
-    setSending(true);
-    window.open(url, "_blank", "noopener,noreferrer");
-    setTimeout(() => setSending(false), 2500);
-  };
+  //   setSending(true);
+  //   window.open(url, "_blank", "noopener,noreferrer");
+  //   setTimeout(() => setSending(false), 2500);
+  // };
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+  if (!validate()) return;
+
+  Swal.fire({
+    icon: "success",
+    title: "Commande enregistrée",
+    text: "Merci ! Votre commande a bien été enregistrée. Nous vous contactons très bientôt.",
+    confirmButtonText: "OK",
+    confirmButtonColor: "#D4A638",
+    background: "#111111",
+    color: "#F8F6F0",
+  });
+
+  setForm({
+    fullName: "",
+    phone: "",
+    email: "",
+    city: "",
+    address: "",
+  });
+  setErrors({});
+};
 
   const fieldClass = (name) =>
     `${inputBase} ${errors[name] ? "border-red-400" : "border-[#e5dfd3]"}`;
